@@ -10,6 +10,10 @@ facturacion.controller('FacturacionCtrl', function($scope) {
 
   $scope.facturas = [];
 
+  $scope.borrar_factura = function() {
+    $scope.facturas.splice($scope.factura_seleccionada, 1);
+  }
+
   $scope.crear_factura = function() {
     var nuevo_numero = 0;
 
