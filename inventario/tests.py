@@ -31,3 +31,8 @@ class ArticuloTestCase(TestCase):
 
         articulo.salida(10)
         self.assertEqual(articulo.cantidad, cantidad_actual - 10)
+
+    def test_calcular(self):
+        articulo = Articulo.objects.get(nombre="Computadora")
+        articulo.entrada(25)
+        self.assertEqual(articulo._cantidad(), 25)
