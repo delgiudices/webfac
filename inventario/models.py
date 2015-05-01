@@ -24,6 +24,10 @@ class Articulo(SistemaModel):
         self.cantidad -= amount
         self.save()
 
+    def _cantidad(self):
+        return self.ajuste_set.all()\
+            .aggregate(models.Sum('cantidad'))['cantidad__sum']
+
 
 class Ajuste(models.Model):
 
