@@ -31,7 +31,8 @@ class SistemaModel(models.Model):
 
     codigo = models.PositiveIntegerField()
     sistema = models.ForeignKey(Sistema)
-    for_sistema = SistemaModelManager()
+    objects = SistemaModelManager()
 
     class Meta:
         unique_together = ("codigo", "sistema")
+        abstract = True

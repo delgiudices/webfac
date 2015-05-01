@@ -6,6 +6,7 @@ from sistema.models import Sistema, SistemaModel
 
 class SistemaModelTestCase(TestCase):
 
+    """
     def setUp(self):
         self.sistema = Sistema.objects.create(name="Kalia")
         self.sistema_2 = Sistema.objects.create(name="NeosCloud")
@@ -24,3 +25,4 @@ class SistemaModelTestCase(TestCase):
         self.assertEqual(
             models[0].codigo + 1,
             models[1].codigo)
+    """
