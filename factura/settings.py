@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'authentication',
     'facturacion',
     'empleados',
+    'inventario',
 )
 
 MIDDLEWARE_CLASSES = (

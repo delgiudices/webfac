@@ -6,9 +6,9 @@ from .exceptions import CantidadError
 
 class ArticuloTestCase(TestCase):
 
-    def setUp():
+    def setUp(self):
         sistema = Sistema.objects.create(name="Test")
-        Articulo.for_sistema.create(
+        Articulo.objects.create(
             sistema=sistema,
             nombre="Computadora",
             costo=100, precio=125)
