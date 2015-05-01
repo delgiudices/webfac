@@ -16,7 +16,7 @@ class SistemaModelManager(models.Manager):
     def create(self, **kwargs):
         try:
             kwargs['codigo'] = self.get_next_codigo(kwargs['sistema'])
-            super(SistemaModelManager, self).create(**kwargs)
+            return super(SistemaModelManager, self).create(**kwargs)
         except KeyError:
             raise Exception("SistemaModel must specify sistema\
                 key argument on create")

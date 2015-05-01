@@ -19,6 +19,8 @@ class ArticuloTestCase(TestCase):
         articulo.entrada(50)
         self.assertEqual(articulo.cantidad, cantidad_actual + 50)
 
+        self.assertTrue(len(articulo.ajuste_set.all()) > 0)
+
     def test_salida(self):
         articulo = Articulo.objects.get(nombre="Computadora")
         cantidad_actual = articulo.cantidad
@@ -32,7 +34,23 @@ class ArticuloTestCase(TestCase):
         articulo.salida(10)
         self.assertEqual(articulo.cantidad, cantidad_actual - 10)
 
+        self.assertTrue(len(articulo.ajuste_set.all()) > 0)
+
     def test_calcular(self):
         articulo = Articulo.objects.get(nombre="Computadora")
         articulo.entrada(25)
         self.assertEqual(articulo._cantidad(), 25)
+
+
+class AjusteTestCase(TestCase):
+
+    def setUp(self):
+        sistema = Sistema.objects.create(name="Test")
+        Articulo.objects.create(
+            sistema=sistema,
+            nombre="Computadora",
+            costo=100, precio=125, cantidad=10)
+
+    def test_create(self):
+        articulo = Articulo.objects.get(nombre="Computadora")
+        self.assertTrue(len(articulo.ajuste_set.all()) > 0)

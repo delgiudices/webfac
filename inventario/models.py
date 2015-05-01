@@ -1,6 +1,22 @@
 from django.db import models
 from sistema.models import SistemaModel
 from .exceptions import CantidadError
+from sistema.models import SistemaModelManager
+
+
+class ArticuloManager(SistemaModelManager):
+
+    def create(self, **kwargs):
+        """
+        Si se crea un articulo con cantidad mayor que 0
+        Se crea un objeto Ajuste con la cantidad dada.
+        """
+        articulo = super(ArticuloManager, self).create(**kwargs)
+        if "cantidad" in kwargs and articulo.cantidad > 0:
+            Ajuste.objects.create(
+                cantidad=articulo.cantidad,
+                articulo=articulo)
+        return articulo
 
 
 class Articulo(SistemaModel):
@@ -9,6 +25,7 @@ class Articulo(SistemaModel):
     costo = models.DecimalField(max_digits=6, decimal_places=2)
     precio = models.DecimalField(max_digits=6, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
+    objects = ArticuloManager()
 
     def entrada(self, amount):
         Ajuste.objects.create(articulo=self, cantidad=amount)
@@ -25,6 +42,9 @@ class Articulo(SistemaModel):
         self.save()
 
     def _cantidad(self):
+        """
+        Calcula la cantidad en base a los ajustes.
+        """
         return self.ajuste_set.all()\
             .aggregate(models.Sum('cantidad'))['cantidad__sum']
 
