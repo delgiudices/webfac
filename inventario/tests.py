@@ -11,7 +11,7 @@ class InventarioPageTestCase(TestCase):
 
     def setUp(self):
         self.sistema = Sistema.objects.create(name="Test")
-        self.user = get_user_model().objects.create_user(
+        self.user = get_user_model().objects.create_superuser(
             username="test", email="someemail@domain.com",
             password="test", sistema=self.sistema)
         self.factory = RequestFactory()
@@ -48,10 +48,9 @@ class InventarioPageTestCase(TestCase):
 
         response = inventario(request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         with self.assertRaises(Articulo.DoesNotExist):
             Articulo.objects.get(pk=a.pk)
-
 
 
 class ArticuloTestCase(TestCase):

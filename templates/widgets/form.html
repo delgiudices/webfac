@@ -1,0 +1,17 @@
+{% load sniplates %}
+{% block input %}
+<div class="form-group">
+  <label>{{ label }}</label>
+  <input type="{{ input_type|default:'text' }}" class="form-control" name="{{ html_name }}" value="{{ value }}" />
+</div>
+{% endblock %}
+{% block TextInput %}{% widget "form:input" col=col %}{% endblock %}
+{% block EmailInput %}{% widget "form:input" input_type="email" col=col %}{% endblock %}
+{% block NumberInput %}{% widget "form:input" input_type="number" %}{% endblock %}
+{% block URLInput %}{% widget "form:input" input_type="url" %}{% endblock %}
+{% block PasswordInput %}{% widget "form:input" input_type="password" value="" col=col %}{% endblock %}
+{% block HiddenInput %}{% widget "form:input" input_type="hidden" label="" %}{% endblock %}
+{% block FileInput %}{% widget "form:input" input_type="file" value="" %}{% endblock %}
+{% block DateInput %}{% widget "form:input" input_type="date" value=value|date:'Y-m-d' %}{% endblock %}
+{% block DateTimeInput %}{% widget "form:input" input_type="datetime" value=value|date:'Y-m-d H:i:s' %}{% endblock %}
+{% block TimeInput %}{% widget "form:input" input_type="time" value=value|date:'H:i:s' %}{% endblock %}

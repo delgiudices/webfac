@@ -32,3 +32,19 @@ class SistemaModel(models.Model):
     def save(self, *args, **kwargs):
         self.codigo = self.get_next_codigo()
         super(SistemaModel, self).save(*args, **kwargs)
+
+
+class DataTableModel(models.Model):
+
+    def get_class(self):
+        return self.__class__.name
+
+    class Meta:
+        abstract = True
+
+    def get_fields(self):
+        """
+        Informacion que sera mostrada en los data-tables
+        """
+        raise NotImplementedError(
+            "DataTableModel subclasses must implement get_fields")

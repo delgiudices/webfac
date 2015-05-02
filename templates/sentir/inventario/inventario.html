@@ -1,11 +1,12 @@
 {% extends "sentir/base.html" %}
+{% load sniplates %}
 
 {% block heading %}
-Facturacion
+Inventario
 {% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb default square rsaquo sm">
   <li><a href="/"><i class="fa fa-home"></i></a></li>
   <li class="active">Inventario</li>
-</ol>{% endblock %}{% block content %}{% endblock content %}
+</ol>{% endblock %}{% block content %}{% load_widgets sistema="widgets/sentir.html" %}{% widget "sistema:data-table" data=articulos %}{% endblock content %}

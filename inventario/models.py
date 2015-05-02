@@ -1,7 +1,8 @@
 from django.db import models
-from sistema.models import SistemaModel
+from sistema.models import SistemaModel, DataTableModel
 from .exceptions import CantidadError
 from sistema.models import SistemaModelManager
+from collections import OrderedDict
 
 
 class ArticuloManager(SistemaModelManager):
@@ -19,7 +20,9 @@ class ArticuloManager(SistemaModelManager):
         return articulo
 
 
-class Articulo(SistemaModel):
+class Articulo(SistemaModel, DataTableModel):
+
+    name = "articulo"
 
     nombre = models.CharField(max_length=50)
     costo = models.DecimalField(max_digits=6, decimal_places=2)
@@ -47,6 +50,15 @@ class Articulo(SistemaModel):
         """
         return self.ajuste_set.all()\
             .aggregate(models.Sum('cantidad'))['cantidad__sum']
+
+    def get_fields(self):
+        return OrderedDict([
+            ('Codigo', self.codigo),
+            ('Nombre', self.nombre),
+            ('Costo', self.costo),
+            ('Precio', self.precio),
+            ('Cantidad', self.cantidad),
+        ])
 
 
 class Ajuste(models.Model):
