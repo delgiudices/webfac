@@ -58,6 +58,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'factura.urls'
 
+
+AUTH_USER_MODEL = 'authentication.User'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
