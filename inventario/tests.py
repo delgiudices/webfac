@@ -1,7 +1,57 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory, modify_settings
 from sistema.models import Sistema
 from .models import Articulo
 from .exceptions import CantidadError
+from django.contrib.auth import get_user_model
+from inventario.views import inventario
+from django.contrib.messages.storage.fallback import FallbackStorage
+
+
+class InventarioPageTestCase(TestCase):
+
+    def setUp(self):
+        self.sistema = Sistema.objects.create(name="Test")
+        self.user = get_user_model().objects.create_user(
+            username="test", email="someemail@domain.com",
+            password="test", sistema=self.sistema)
+        self.factory = RequestFactory()
+
+    def test_inventario_page_exists(self):
+        request = self.factory.get('/inventario')
+        request.user = self.user
+        response = inventario(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_articulo(self):
+        request = self.factory.post('/inventario', {
+            'accion': 'new_articulo', 'nombre': 'Computadora',
+            'costo': '150.0', 'precio': '123', })
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+        request.user = self.user
+        inventario(request)
+        self.assertTrue(len(Articulo.objects.filter(
+            sistema=self.sistema, nombre='Computadora')) > 0)
+
+    def test_delete_articulo(self):
+        a = Articulo.objects.create(
+            nombre="Computadora", costo=0, precio=0, sistema=self.sistema)
+
+        request = self.factory.post('/inventario', {
+            'accion': 'delete_articulo', 'articulo_pk': '%s' % a.pk})
+        request.user = self.user
+
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
+        response = inventario(request)
+
+        self.assertEqual(response.status_code, 200)
+        with self.assertRaises(Articulo.DoesNotExist):
+            Articulo.objects.get(pk=a.pk)
+
 
 
 class ArticuloTestCase(TestCase):
