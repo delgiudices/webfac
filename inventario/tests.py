@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory, modify_settings
+from django.test import TestCase, RequestFactory
 from sistema.models import Sistema
 from .models import Articulo
 from .exceptions import CantidadError
