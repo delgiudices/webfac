@@ -24,24 +24,29 @@
 <div class="the-box no-border">
   <button class="btn btn-primary" data-toggle="modal" data-target="#create_modal">Agregar</button>
 </div>
-<div id="create_modal" class="modal fade" id="DangerModalColor" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content modal-no-shadow modal-no-border">
-      <div class="modal-header">
+<form method="post" data-toggle="validator">
+  <div id="create_modal" class="modal fade" id="NormalDanger" tabindex="-1" role="dialog"  aria-labelledby="DangerModalColorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content modal-no-shadow modal-no-border">
+        <div class="modal-header">
           <h4>Crear nuevo</h4>
-      </div>
-      <div class="modal-body">
-        {% for field in form %}
+        </div>
+        <div class="modal-body">
+          <p>Campos marcados con <span style="color:red">*</span> son requeridos y no pueden quedar vacios.</p>
+          {% csrf_token %}
+          <input type="hidden" name="accion" value="new_{{ class.name }}" />
+          {% for field in form %}
           {% form_field field %}
-        {% endfor %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">No borrar</button>
-        <button type="button" class="btn btn-primary" id="confirm_delete_button">Si</button>
-      </div><!-- /.modal-footer -->
-    </div><!-- /.modal-content .modal-no-shadow .modal-no-border .the-box .danger .full -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /#DangerModalColor -->
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </div><!-- /.modal-footer -->
+      </div><!-- /.modal-content .modal-no-shadow .modal-no-border .the-box .danger .full -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /#DangerModalColor -->
+</form>
 <!-- END DATA TABLE MENU -->
 {% if data %}
 <!-- Begin table striped -->
@@ -66,8 +71,8 @@
             <i class="delete_icon fa fa-trash-o">
               <form method="post">
                 {% csrf_token %}
-                <input type="hidden" name="accion" value="delete_{{ instance.get_class }}" />
-                <input type="hidden" name="{{ instance.get_class }}_pk" value="{{ instance.pk }}" />
+                <input type="hidden" name="accion" value="delete_{{ class.name }}" />
+                <input type="hidden" name="{{ class.name }}_pk" value="{{ instance.pk }}" />
               </form>
             </i>
           </td>
@@ -78,6 +83,27 @@
   </div><!-- /.table-responsive -->
 </div><!-- /.the-box -->
 <!-- End table striped -->
+<div class="row">
+  <div class="col-md-12">
+    <ul class="pagination square">
+      {% if data.has_previous %}
+      <li {% if not data.has_previous %}class="disabled"{% endif %}>
+        <a href="?page={% if data.has_previous %}{{ data.previous_page_number }}{% endif %}">«</a>
+      </li>
+      {% endif %}
+      {% for page_number in page.paginator.page_range %}
+      <li {% if page_number == data.number %}class="active"{% endif %}>
+        <a href="?page={{ page_number }}">{{ page_number }}</a>
+      </li>
+      {% endfor %}
+      {% if data.has_next %}
+      <li><a href="?page={{ data.next_page_number }}">»</a></li>
+      {% endif %}
+
+    </ul>
+  </div>
+</div>
+Mostrando pagina {{ data.number }} de {{ data.paginator.num_pages }}. ( {{ data.paginator.count }} articulos encontrados )
 {% else %}
 No hay resultados
 {% endif %}

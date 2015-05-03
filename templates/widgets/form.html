@@ -1,8 +1,8 @@
 {% load sniplates %}
 {% block input %}
 <div class="form-group">
-  <label>{{ label }}</label>
-  <input type="{{ input_type|default:'text' }}" class="form-control" name="{{ html_name }}" value="{{ value }}" />
+  <label class="control-label" for="{{ id_for_label }}">{{ label }} {% if field.required %}<span style="color:red;">*</span>{% endif %}</label>
+  <input id="{{ id }}" type="{{ input_type|default:'text' }}" class="form-control" name="{{ html_name }}" {% if value %}value="{{ value }}"{% endif %} {% if field.required %}required{% endif %}/>
 </div>
 {% endblock %}
 {% block TextInput %}{% widget "form:input" col=col %}{% endblock %}
