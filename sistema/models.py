@@ -30,7 +30,9 @@ class SistemaModel(models.Model):
         return current_max + 1
 
     def save(self, *args, **kwargs):
-        self.codigo = self.get_next_codigo()
+        if self.codigo is None:
+            # Model is being created
+            self.codigo = self.get_next_codigo()
         super(SistemaModel, self).save(*args, **kwargs)
 
 
