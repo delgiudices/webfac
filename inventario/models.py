@@ -1,23 +1,7 @@
 from django.db import models
 from sistema.models import SistemaModel, DataTableModel
 from .exceptions import CantidadError
-from sistema.models import SistemaModelManager
 from collections import OrderedDict
-
-
-class ArticuloManager(SistemaModelManager):
-
-    def create(self, **kwargs):
-        """
-        Si se crea un articulo con cantidad mayor que 0
-        Se crea un objeto Ajuste con la cantidad dada.
-        """
-        articulo = super(ArticuloManager, self).create(**kwargs)
-        if "cantidad" in kwargs and articulo.cantidad > 0:
-            Ajuste.objects.create(
-                cantidad=articulo.cantidad,
-                articulo=articulo)
-        return articulo
 
 
 class Articulo(SistemaModel, DataTableModel):
@@ -28,7 +12,6 @@ class Articulo(SistemaModel, DataTableModel):
     costo = models.DecimalField(max_digits=6, decimal_places=2)
     precio = models.DecimalField(max_digits=6, decimal_places=2)
     cantidad = models.PositiveIntegerField(default=0)
-    objects = ArticuloManager()
 
     def entrada(self, amount):
         Ajuste.objects.create(articulo=self, cantidad=amount)
@@ -59,6 +42,24 @@ class Articulo(SistemaModel, DataTableModel):
             ('Precio', self.precio),
             ('Cantidad', self.cantidad),
         ])
+
+    def save(self, *args, **kwargs):
+        """
+        Si se crea un articulo con cantidad mayor que 0
+        Se crea un objeto Ajuste con la cantidad dada.
+        """
+        # Model is being created instead of updated
+        model_is_being_created = self.codigo is None
+        super(Articulo, self).save(*args, **kwargs)
+        if model_is_being_created:
+            if self.cantidad > 0:
+                Ajuste.objects.create(
+                    cantidad=self.cantidad,
+                    articulo=self)
+        return self
+
+
+
 
 
 class Ajuste(models.Model):

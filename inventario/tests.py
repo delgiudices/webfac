@@ -95,10 +95,11 @@ class AjusteTestCase(TestCase):
 
     def setUp(self):
         sistema = Sistema.objects.create(name="Test")
-        Articulo.objects.create(
+        articulo = Articulo(
             sistema=sistema,
             nombre="Computadora",
             costo=100, precio=125, cantidad=10)
+        articulo.save()
 
     def test_create(self):
         articulo = Articulo.objects.get(nombre="Computadora")
