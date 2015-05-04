@@ -1,6 +1,6 @@
 {% load sniplates %}
 {% block nav_link %}
-<li><a href="{{ link }}"><i class="fa icon-sidebar {{ icon_class }}"></i>{{ name }}</a></li>
+<li><a href="{% url url_name %}"><i class="fa icon-sidebar {{ icon_class }}"></i>{{ name }}</a></li>
 {% endblock %}
 
 {% block data-table %}
