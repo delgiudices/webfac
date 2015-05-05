@@ -59,9 +59,6 @@ class Articulo(SistemaModel, DataTableModel):
         return self
 
 
-
-
-
 class Ajuste(models.Model):
 
     articulo = models.ForeignKey(Articulo)

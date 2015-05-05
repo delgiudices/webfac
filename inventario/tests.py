@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from inventario.views import inventario
 from django.contrib.messages.storage.fallback import FallbackStorage
 from .views import articulo
+from django.http import Http404
 
 
 def set_up(self):
@@ -57,6 +58,13 @@ class ArticuloPageTestCase(TestCase):
             response = articulo(request, self.articulo.codigo)
             self.assertEqual(response.status_code, 302)
 
+    def test_user_cant_access_other_system_articulo(self):
+        request = self.factory.get(
+            '/inventario/articulo/%s/' % 100)
+        request.user = self.user
+
+        with self.assertRaises(Http404):
+            response = articulo(request, 100)
 
 
 class InventarioPageTestCase(TestCase):

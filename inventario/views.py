@@ -3,7 +3,7 @@ from .forms import ArticuloForm
 from .models import Articulo
 from django.contrib.auth.decorators import permission_required, login_required
 from sistema.datatable import data_table_decorator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 # Create your views here.
 
 
@@ -25,7 +25,13 @@ def inventario(request, page=None, form=None):
 @permission_required("inventario.change_articulo", raise_exception=True)
 def articulo(request, codigo_articulo):
     accion = request.POST.get('accion')
-    articulo = Articulo.objects.get(codigo=codigo_articulo)
+
+    # Get the articulo or raise Http404 if articulo is not found
+    try:
+        articulo = Articulo.objects.get(
+            codigo=codigo_articulo, sistema=request.user.sistema)
+    except Articulo.DoesNotExist:
+        raise Http404
 
     if accion == 'entrada':
         articulo.entrada(int(request.POST.get('amount', 0)))
