@@ -1,0 +1,10 @@
+Sobre el sistema
+================
+
+.. toctree::
+   :maxdepth: 2
+
+DelFac es un sistema de facturación desarollado para funcionar en la nube
+cuyo proposito es tener la funcionalidad de los sistemas que hay actualmente
+en el mercado, de una manera sencilla y accesible desde cualquier
+dispositivo.
