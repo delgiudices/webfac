@@ -64,7 +64,7 @@ class ArticuloPageTestCase(TestCase):
         request.user = self.user
 
         with self.assertRaises(Http404):
-            response = articulo(request, 100)
+            articulo(request, 100)
 
 
 class InventarioPageTestCase(TestCase):

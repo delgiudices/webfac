@@ -42,6 +42,6 @@ def articulo(request, codigo_articulo):
 
     # When normal requests..
     context = {
-
+        'articulo': articulo
     }
     return render(request, 'sentir/inventario/articulo.html', context)

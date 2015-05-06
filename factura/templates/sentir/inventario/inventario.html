@@ -1,15 +1,7 @@
-{% extends "sentir/base.html" %}
+{% extends "sentir/inventario/base.html" %}
 {% load sniplates %}
-
-{% block heading %}
-Inventario
-{% endblock %}
-{% block title %}
-Inventario
-{% endblock %}
-
 {% block breadcrumb %}
 <ol class="breadcrumb default square rsaquo sm">
   <li><a href="/"><i class="fa fa-home"></i></a></li>
   <li class="active">Inventario</li>
-</ol>{% endblock %}{% block content %}{% load_widgets sistema="widgets/sentir.html" %}{% widget "sistema:data-table" data=page class_name=class.name %}{% endblock content %}
+</ol>{% endblock %}{% block inventario_content %}{% load_widgets sistema="widgets/sentir.html" %}{% widget "sistema:data-table" data=page class_name=class.name %}{% endblock inventario_content %}
